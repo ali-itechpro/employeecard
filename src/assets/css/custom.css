@@ -1,0 +1,44 @@
+ /* body css */
+body{
+    margin:0;
+    padding:0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:rgb(233, 233, 233);
+}
+
+/* container styles  */
+.container {background-color: #fff;}
+
+
+/* header component styles */
+.header {font-weight: bold;color:#000; border: 1px solid #ccc;padding:5px}
+.header > .row > div {color:#ccc}
+.header .comest{text-align: right;}
+
+/* search component styles */
+#btnSearch{font-size: 20px; font-weight: 700; padding:2px}
+
+
+
+/* Employees component */
+.table td, thead, th{text-align: center;}
+
+.table>:not(:first-child) {
+    border-top: 0;
+}
+
+.table-bordered>:not(caption)> {
+    border-color:#dee2e6;
+}
+
+.pagination {float:right}
+
+
+/* modal popup */
+.modal-header {border:0}
+
+@media (min-width: 576px){
+.modal-dialog {
+    max-width: 700px;
+}}
+
