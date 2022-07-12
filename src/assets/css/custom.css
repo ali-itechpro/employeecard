@@ -11,9 +11,9 @@ body{
 
 
 /* header component styles */
-.header {font-weight: bold;color:#000; border: 1px solid #ccc;padding:5px}
-.header > .row > div {color:#ccc}
-.header .comest{text-align: right;}
+.header-con {font-weight: bold;color:#000; border: 1px solid #ccc;padding:5px}
+.header-con > .row > div {color:#ccc}
+.header-con .comest{text-align: right;}
 
 /* search component styles */
 #btnSearch{font-size: 20px; font-weight: 700; padding:2px}

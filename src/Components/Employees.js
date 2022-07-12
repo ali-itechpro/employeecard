@@ -7,7 +7,7 @@ const empDetails=()=>{
 }
 
 const Employees = empData =>{
-    console.log(empData.empData);
+    //console.log(empData.empData);
     let data=[];
     data=empData.empData;
 
