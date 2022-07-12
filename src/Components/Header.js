@@ -1,7 +1,7 @@
 const Header = props => {
     let compInfo=[];
     compInfo=props.comp;
-    console.log(compInfo)
+    //console.log(compInfo)
   
     return <>
         <header className="header-con">

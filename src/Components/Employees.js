@@ -1,19 +1,16 @@
 import React from 'react';
+import Search from './Search'
 import EmployeeDetails from './EmployeeDetails'
 
 
-const empDetails=()=>{
-
-}
-
-const Employees = empData =>{
-    //console.log(empData.empData);
+const Employees = props =>{
+    //console.log(props.empData);
     let data=[];
-    data=empData.empData;
+    data=props.empData;
 
     return (
-      
       <>
+       <Search></Search>
         <table className="table  caption-top table-bordered table-striped table-hover table-responsive mt-5">
           <caption>Showing 10 of 500</caption>
           <thead>

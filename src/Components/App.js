@@ -18,7 +18,6 @@ const App=()=> {
     <div className="container pt-2 pb-5">
       <Header comp={compInfo}/>
       <main>
-            <Search></Search>
             <Employees empData={empData} />
       </main>
     </div>
