@@ -65,14 +65,14 @@ const Employees = () =>{
       .catch(err => err.message)
     }
 
-    const paginationHandle = async(data) =>{
+    const paginationHandler = async(data) =>{
       let currentPage = data.selected + 1;
       const fetchFormServer = await fetchData(currentPage);
       setEmpDetails(fetchFormServer);
       //console.log("paginationHandle...", empDetails)
     }
 
-    const handleClick =(id)=>{
+    const EmpDetailsHandler =(id)=>{
       //alert(id);
       const empRecord= empDetails.find(emp => {
         //console.log("emp indi record", emp);
@@ -111,7 +111,7 @@ const Employees = () =>{
           </thead>
           <tbody>
             {empDetails.length !==0 ?(empDetails.map((emp,i) => {
-            return <tr data-bs-toggle="modal" data-bs-target="#exampleModal" key={i} onClick={()=>{handleClick(emp.id)}}>
+            return <tr data-bs-toggle="modal" data-bs-target="#exampleModal" key={i} onClick={()=>{EmpDetailsHandler(emp.id)}}>
               <td>{emp.id}</td>
               <td><img src={emp.avatar} alt={emp.firstName} className="img-avatar"></img></td>
               <td>{emp.firstName + " " + emp.lastName}</td>
@@ -139,7 +139,7 @@ const Employees = () =>{
         pageCount={pageCount}
         marginPagesDisplayed={2}
         pageRangeDisplayed={3}
-        onPageChange={paginationHandle}
+        onPageChange={paginationHandler}
         containerClassName={"pagination justify-content-center"}
         pageClassName={"page-item"}
         nextClassName={"page-item"}
