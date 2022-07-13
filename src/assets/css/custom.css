@@ -6,6 +6,9 @@ body{
     background:rgb(233, 233, 233);
 }
 
+.font-small{font-size:12px !important;}
+/* .mb-2{margin-bottom: 2px;} */
+
 html,body{
     height:100%;
 }

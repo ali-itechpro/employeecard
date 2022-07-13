@@ -14,6 +14,4 @@
 ## Remaining
 - sorting
 - fixing img avatar
-- fixing date
-- and minor things
 

@@ -12,7 +12,8 @@ const Employees = () =>{
   const [empDetails, setEmpDetails]=useState([]);
   const [value, setValue]= useState("");
   const [pageCount, setpageCount] = useState(0);
-  const [empRecords,setEmpRecords]= useState([])
+  const [empRecords,setEmpRecords]= useState([]);
+  const [totalRecords, setTotalRecords]=useState(0);
   let limit = 10;
 
 
@@ -35,9 +36,10 @@ const Employees = () =>{
       )
         .then((res) => {
           setEmpDetails(res.data);
-          const total = Number(res.headers["x-total-count"]);
-          console.log("total:", total);
-          setpageCount(Math.ceil(total / limit));
+          const totalRecords = Number(res.headers["x-total-count"]);
+          setTotalRecords(totalRecords);
+          console.log("total:", totalRecords);
+          setpageCount(Math.ceil(totalRecords / limit));
         })
         .catch((err) => console.log(err.message));
     };
@@ -63,13 +65,14 @@ const Employees = () =>{
       return await Axios.get(`http://localhost:5000/employees?_page=${currentPage}&_limit=${limit}`)
       .then(res => res.data)
       .catch(err => err.message)
+      
     }
 
     const paginationHandler = async(data) =>{
       let currentPage = data.selected + 1;
       const fetchFormServer = await fetchData(currentPage);
       setEmpDetails(fetchFormServer);
-      //console.log("paginationHandle...", empDetails)
+      console.log("paginationHandle...", empDetails)
     }
 
     const EmpDetailsHandler =(id)=>{
@@ -99,7 +102,7 @@ const Employees = () =>{
 
         {/* list of employees */}
         <table className="table caption-top table-bordered table-striped table-hover table-responsive mt-5">
-          <caption>Showing 10 of 500</caption>
+          <caption>Showing 10 of {totalRecords}</caption>
           <thead>
             <tr>
               <th scope="col">ID</th>
@@ -138,7 +141,7 @@ const Employees = () =>{
         breakLabel={"..."}
         pageCount={pageCount}
         marginPagesDisplayed={2}
-        pageRangeDisplayed={3}
+        pageRangeDisplayed={2}
         onPageChange={paginationHandler}
         containerClassName={"pagination justify-content-center"}
         pageClassName={"page-item"}
