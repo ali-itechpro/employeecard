@@ -3,7 +3,7 @@
 - second run react app: npm started
 
 
-## Functionalities finished
+## Completed
 
 - Displaying list of employees
 - Displaying employee details when clicked on employee row
@@ -11,7 +11,7 @@
 - Pagination
 
 
-## unfinished
+## Remaining
 - sorting
 - fixing img avatar
 - fixing date
