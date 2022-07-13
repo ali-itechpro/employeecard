@@ -2,7 +2,8 @@ import React, { useState,useEffect} from 'react'
 import Search from './Search'
 import EmployeeDetails from './EmployeeDetails'
 import Header from './Header'
-import axios from 'axios'
+import Axios from 'axios'
+import Pagination from 'react-paginate'
 
 
 const Employees = () =>{
@@ -10,35 +11,45 @@ const Employees = () =>{
   const [compDetails, setCompDetails]=useState([]);
   const [empDetails, setEmpDetails]=useState([]);
   const [value, setValue]= useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit]= useState(2);
+  const [pageCount, setpageCount] = useState(0);
+  const [empRecords,setEmpRecords]= useState([])
+  let limit = 10;
 
-  useEffect(()=>{
+
+  useEffect(() => {
+    // loading company details
+    const fnCompDetails = async () => {
+      return await Axios.get("http://localhost:5000/companyInfo")
+        .then((res) => {
+          setCompDetails(res.data);
+
+        })
+        .catch((err) => console.log(err.message));
+    };
     fnCompDetails();
-    fnEmpDetails(0,10,0);
-  },[])
 
+    // loading employee details
+    const fnEmpDetails = async () => {
+      return await Axios.get(
+        `http://localhost:5000/employees?_page=1&_limit=${limit}`
+      )
+        .then((res) => {
+          setEmpDetails(res.data);
+          const total = Number(res.headers["x-total-count"]);
+          console.log("total:", total);
+          setpageCount(Math.ceil(total / limit));
+        })
+        .catch((err) => console.log(err.message));
+    };
+    fnEmpDetails();
+  }, [limit]);
 
-  // loading company details
-  const fnCompDetails = async ()=>{
-    return await axios.get("http://localhost:5000/companyInfo")
-    .then(res => setCompDetails(res.data))
-    .catch(err => console.log(err.message))
-  }
-
-
-  // loading employee details
-  const fnEmpDetails = async (start, end, increase)=>{
-    return await axios.get(`http://localhost:5000/employees?_start=${start}&_end=${end}`)
-    .then(res => setEmpDetails(res.data))
-    .catch(err => console.log(err.message))
-  }
-
-  console.log("app emp data:", empDetails);
+  // Search data
+  console.log("pagecont:", pageCount);
 
     const SearchHandler = (e) => {
         e.preventDefault();
-        return axios.get(`http://localhost:5000/employees?q=${value}`)
+        return Axios.get(`http://localhost:5000/employees?q=${value}`)
         .then(res => {
           setEmpDetails(res.data);
           console.log("search clicked:", empDetails)
@@ -47,7 +58,30 @@ const Employees = () =>{
         .catch(err => err.message)
     }
 
+    //fetch data
+    const fetchData = async (currentPage) => {
+      return await Axios.get(`http://localhost:5000/employees?_page=${currentPage}&_limit=${limit}`)
+      .then(res => res.data)
+      .catch(err => err.message)
+    }
 
+    const paginationHandle = async(data) =>{
+      let currentPage = data.selected + 1;
+      const fetchFormServer = await fetchData(currentPage);
+      setEmpDetails(fetchFormServer);
+      //console.log("paginationHandle...", empDetails)
+    }
+
+    const handleClick =(id)=>{
+      //alert(id);
+      const empRecord= empDetails.find(emp => {
+        //console.log("emp indi record", emp);
+        return emp.id == id;
+      })
+      setEmpRecords(empRecord);
+      //console.log("emprecord...",empRecord);
+
+    }
 
     return (
       <>
@@ -69,6 +103,7 @@ const Employees = () =>{
           <thead>
             <tr>
               <th scope="col">ID</th>
+              <th>&nbsp;</th>
               <th scope="col">Name</th>
               <th scope="col">Contact No</th>
               <th scope="col">Address</th>
@@ -76,51 +111,42 @@ const Employees = () =>{
           </thead>
           <tbody>
             {empDetails.length !==0 ?(empDetails.map((emp,i) => {
-            return <tr data-bs-toggle="modal" data-bs-target="#exampleModal" key={i}>
-              <th scope="row">{emp.id}</th>
+            return <tr data-bs-toggle="modal" data-bs-target="#exampleModal" key={i} onClick={()=>{handleClick(emp.id)}}>
+              <td>{emp.id}</td>
+              <td><img src={emp.avatar} alt={emp.firstName} className="img-avatar"></img></td>
               <td>{emp.firstName + " " + emp.lastName}</td>
               <td>{emp.contactNo}</td>
               <td>{emp.address}</td>
             </tr>
             })):(
-              <th className="alert alert-danger" role="alert" colspan="4">Data not found</th>
+              <tr><td className="alert alert-danger" role="alert" colSpan="4">Data not found</td>
+              </tr>
             )}
             
           </tbody>
         </table>
 
         {/* paginations  */}
-            <ul className="pagination">
-              <li className="page-item disabled">
-                <a
-                  className="page-link"
-                  href="http">
-                  Previous
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="http">
-                  1
-                </a>
-              </li>
-              <li className="page-item active" aria-current="page">
-                <a className="page-link" href="http">
-                  2
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="http">
-                  3
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="http">
-                  Next
-                </a>
-              </li>
-            </ul>
-
-        <EmployeeDetails></EmployeeDetails>
+        <Pagination
+        previousLabel={"previous"}
+        nextLabel={"next"}
+        activeClassName={"active"}
+        nextLinkClassName={"page-link"}
+        pageLinkClassName={"page-link"}
+        previousClassName={"page-item"}
+        previousLinkClassName={"page-link"}
+        breakLabel={"..."}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={3}
+        onPageChange={paginationHandle}
+        containerClassName={"pagination justify-content-center"}
+        pageClassName={"page-item"}
+        nextClassName={"page-item"}
+        breakClassName={"page-item"}
+        breakLinkClassName={"page-link"}
+      />
+        <EmployeeDetails emprecords={empRecords}></EmployeeDetails>
         </main>
       </>
     );

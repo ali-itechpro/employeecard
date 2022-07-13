@@ -6,8 +6,12 @@ body{
     background:rgb(233, 233, 233);
 }
 
+html,body{
+    height:100%;
+}
+
 /* container styles  */
-.container {background-color: #fff;}
+.container {background-color: #fff; min-height: 100%;  height:100%;}
 
 
 /* header component styles */
@@ -26,6 +30,7 @@ body{
 .table>:not(:first-child) {
     border-top: 0;
 }
+.img-avatar{width:80px; height:80px; border:1px solid #ccc; padding:2px}
 
 .table-bordered>:not(caption)> {
     border-color:#dee2e6;
