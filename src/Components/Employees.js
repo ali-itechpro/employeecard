@@ -1,17 +1,70 @@
-import React from 'react';
+import React, { useState,useEffect} from 'react'
 import Search from './Search'
 import EmployeeDetails from './EmployeeDetails'
+import Header from './Header'
+import axios from 'axios'
 
 
-const Employees = props =>{
-    //console.log(props.empData);
-    let data=[];
-    data=props.empData;
+const Employees = () =>{
+
+  const [compDetails, setCompDetails]=useState([]);
+  const [empDetails, setEmpDetails]=useState([]);
+  const [value, setValue]= useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit]= useState(2);
+
+  useEffect(()=>{
+    fnCompDetails();
+    fnEmpDetails(0,10,0);
+  },[])
+
+
+  // loading company details
+  const fnCompDetails = async ()=>{
+    return await axios.get("http://localhost:5000/companyInfo")
+    .then(res => setCompDetails(res.data))
+    .catch(err => console.log(err.message))
+  }
+
+
+  // loading employee details
+  const fnEmpDetails = async (start, end, increase)=>{
+    return await axios.get(`http://localhost:5000/employees?_start=${start}&_end=${end}`)
+    .then(res => setEmpDetails(res.data))
+    .catch(err => console.log(err.message))
+  }
+
+  console.log("app emp data:", empDetails);
+
+    const SearchHandler = (e) => {
+        e.preventDefault();
+        return axios.get(`http://localhost:5000/employees?q=${value}`)
+        .then(res => {
+          setEmpDetails(res.data);
+          console.log("search clicked:", empDetails)
+          setValue("");
+        })
+        .catch(err => err.message)
+    }
+
+
 
     return (
       <>
-       <Search></Search>
-        <table className="table  caption-top table-bordered table-striped table-hover table-responsive mt-5">
+      {/* Header component */}
+       <Header company={compDetails}/>
+
+      <main>
+       {/* search component */}
+       <form onSubmit={SearchHandler}>
+       <div className="comp-search col-md-6 offset-md-6 row pt-5">
+            <div className="col-md-8 pb-2"><input type="text" className="form-control" placeholder="Search Name..." value={value} onChange={(e)=>{setValue(e.target.value)}}></input></div>
+            <div className="col-md-4 d-grid pb-2"><button type="submit" id="btnSearch" className="btn btn-primary btn-block">Search</button></div>
+        </div>
+        </form>
+
+        {/* list of employees */}
+        <table className="table caption-top table-bordered table-striped table-hover table-responsive mt-5">
           <caption>Showing 10 of 500</caption>
           <thead>
             <tr>
@@ -22,19 +75,21 @@ const Employees = props =>{
             </tr>
           </thead>
           <tbody>
-            {data && data.map((emp,i) => {
+            {empDetails.length !==0 ?(empDetails.map((emp,i) => {
             return <tr data-bs-toggle="modal" data-bs-target="#exampleModal" key={i}>
               <th scope="row">{emp.id}</th>
               <td>{emp.firstName + " " + emp.lastName}</td>
               <td>{emp.contactNo}</td>
               <td>{emp.address}</td>
             </tr>
-            })}
+            })):(
+              <th className="alert alert-danger" role="alert" colspan="4">Data not found</th>
+            )}
             
           </tbody>
         </table>
-        <div className="">
-          <nav aria-label="...">
+
+        {/* paginations  */}
             <ul className="pagination">
               <li className="page-item disabled">
                 <a
@@ -64,9 +119,9 @@ const Employees = props =>{
                 </a>
               </li>
             </ul>
-          </nav>
-        </div>
+
         <EmployeeDetails></EmployeeDetails>
+        </main>
       </>
     );
 }

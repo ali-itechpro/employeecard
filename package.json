@@ -16,7 +16,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "release": "standard-version",
+    "server":"json-server --watch src/data/sample-data.json --port 5000"
   },
   "eslintConfig": {
     "extends": [
@@ -35,5 +37,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "standard-version": "^9.5.0"
   }
 }
