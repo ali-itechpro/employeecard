@@ -4,7 +4,7 @@ How to get started
 ##   At first run the json server
     Command to run json-server: npm run server
 
-##   Next run the React application
+##  Next run the React application
     Command to run React application: npm start
 
 
@@ -18,5 +18,6 @@ How to get started
 
 
 ## Remaining
-- fixing img avatar
+- img avatar
+- minor fix
 
