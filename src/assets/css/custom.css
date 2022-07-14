@@ -39,7 +39,24 @@ html,body{
     border-color:#dee2e6;
 }
 
+/* icons */
+.icon-parent{position: relative; display:inline-block}
+.icon-sort{cursor:pointer;}
+.icon-container{text-align:center}
+.icon-label{display:inline-block;}
+.icon-sort{margin:0px;padding:0px;height:20px;border:0; cursor: pointer;}
+
+
+/* paginations */
 .pagination {float:right}
+
+
+/* alerts */
+.alert-danger {
+    color: #842029;
+    background-color: #f8d7da  !important;
+    border-color: #f5c2c7;
+}
 
 
 /* modal popup */
