@@ -1,9 +1,14 @@
 ### How to get started
-- first run json server: npm run server
-- second run react app: npm started
+
+##  Please follow the instruction to run the application:
+#   At first run the json server
+    Command to run json-server: npm run server
+
+#   Now run the React application
+    Command to run React application: npm start
 
 
-## Completed
+## Completed features
 
 - Displaying list of employees
 - Displaying employee details when clicked on employee row
