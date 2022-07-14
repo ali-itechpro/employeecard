@@ -1,5 +1,4 @@
 import React, { useState,useEffect} from 'react'
-import Search from './Search'
 import EmployeeDetails from './EmployeeDetails'
 import Header from './Header'
 import Axios from 'axios'
@@ -15,7 +14,6 @@ const Employees = () =>{
   const [pageCount, setpageCount] = useState(0);
   const [empRecords,setEmpRecords]= useState([]);
   const [totalRecords, setTotalRecords]=useState(0);
-  const [currentPageState, setCurrentPageState] = useState(0);
   let limit = 10;
 
 
@@ -144,7 +142,7 @@ const Employees = () =>{
           {/* list of employees */}
           <div className="table-responsive">
             <table className="table caption-top table-bordered table-striped table-hover table-responsive table-responsive-sm mt-5 dataTable">
-              <caption>Showing 10 of {totalRecords}</caption>
+              <caption>Total Records: {totalRecords}</caption>
               <thead>
                 <tr>
                   <th>ID</th>
